@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!-- Put site-specific property overrides in this file. -->
+<configuration>
+
+    <property>
+        <name>tag1</name>
+        <value>嘿嘿嘿</value>
+    </property>
+
+    <!-- SQL DB configuration, might be DB2, mysql, etc. -->
+    <property>
+        <!-- SQL JDBC URL -->
+        <!-- URL format: jdbc:<DB Type>://<hostname>:<port>/<DB Name> -->
+        <name>sql.jdbc.url</name>
+        <value>jdbc:db2://DB2.Ali:50000/razor</value>
+    </property>
+
+    <property>
+        <!-- SQL DB username -->
+        <name>sql.jdbc.user</name>
+        <value>db2inst1</value>
+    </property>
+
+    <property>
+        <!-- SQL DB password -->
+        <name>sql.jdbc.passwd</name>
+        <value>bluejan@)!$</value>
+    </property>
+
+    <property>
+        <!-- SQL DB prefix -->
+        <name>sql.razor.db.prefix</name>
+        <value>razor_</value>
+    </property>
+
+</configuration>
+
