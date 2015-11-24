@@ -17,6 +17,11 @@ import java.util.*;
 
 /**
  * Created by feng.wei on 2015/11/20.
+ * Post data to elasticsearch
+ * datatype for example:
+ * index: 1 (mapping 人口属性 in Chinese)
+ * type: 1 (mapping 性别 in Chinese)
+ * {"channel":"九九应用","index":"人口属性","type":"性别","userid":"22b82856f4914f4","version":5,"tags":["独立","25","英语","英语"]}
  */
 public class PushData {
 
@@ -85,8 +90,8 @@ public class PushData {
                     .setSource(PushData.generateJson(indexName, typeName)));
 
             t3 = System.currentTimeMillis();
-            if (t3 - t1 >= 1000){
-                System.out.println("t3-t1=" + (t3-t1));
+            if (t3 - t1 >= 1000) {
+                System.out.println("t3-t1=" + (t3 - t1));
             }
 
         }
@@ -118,8 +123,8 @@ public class PushData {
                     .setSource(PushData.generateJson(indexName, typeName)));
 
             t3 = System.currentTimeMillis();
-            if (t3 - t1 >= 1000){
-                System.out.println("t3-t1=" + (t3-t1));
+            if (t3 - t1 >= 1000) {
+                System.out.println("t3-t1=" + (t3 - t1));
             }
 
         }
@@ -138,12 +143,12 @@ public class PushData {
         long t1 = System.currentTimeMillis();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
 
-        int num = 10;
-        int count = 1;
+        int num = 10000;
+        int count = 1000;
         long t11 = System.currentTimeMillis();
         for (int i = 0; i < count; i++) {
 //            postIndexData(bulkRequest,client,num);
-            postIndexData(client,num);
+            postIndexData(client, num);
         }
         long t22 = System.currentTimeMillis();
 

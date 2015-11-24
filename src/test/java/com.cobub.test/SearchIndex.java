@@ -53,13 +53,6 @@ public class SearchIndex {
 
     @Test
     public void queryTest() throws IOException {
-//        Node node = NodeBuilder.nodeBuilder()
-//                .clusterName("my-application")
-//                .client(true).node();
-////        ����elastic�ͻ���
-//        Client client = node.client();
-
-        //��ȡ��ѯģ�壬Ȼ�����ò�����ѯ
         try {
             BufferedReader bodyReader = new BufferedReader(new InputStreamReader(new FileInputStream("D:\\common.template"), "utf8"));
             String line = null;
@@ -180,24 +173,41 @@ public class SearchIndex {
     }
 
 
+    /**
+     * search Nested datatype
+     * example:
+     * GET my_index/_search
+     * {
+     * "query": {
+     * "bool": {
+     * "must": [
+     * { "match": { "user.first": "Alice" }},
+     * { "match": { "user.last":  "White" }}
+     * ]
+     * }
+     * }
+     * }
+     * <p/>
+     * curl -XGET 'http://localhost:9200/1/1/_search?pretty=true' -d '{"query":{"bool":{"must":[{"match":{"type":"性别"}},{"match":{"tags":"英语"}},{"match":{"tags":"自行车"}}]}}}'
+     * <p/>
+     * curl -XGET 'http://localhost:9200/1/1/_search?pretty=true' -d '{"query":{"bool":{"must":{"match":{"type":"性别"}}}}}'
+     *
+     * @throws UnsupportedEncodingException
+     */
     @Test
     public void tagQueryTest() throws UnsupportedEncodingException {
         long t1 = System.currentTimeMillis();
 //        String s = new String("人口属性".getBytes(),"UTF-8");
         SearchResponse response = client2.prepareSearch()
-//                .setIndices("1", "6")
-//                .setTypes("2")
-//                .setQuery(QueryBuilders.regexpQuery("userid", "99*"))
 //                .setQuery(QueryBuilders.regexpQuery("index", "([0-9a-zA-Z]*[\\u4E00-\\u9FA5]*[0-9a-zA-Z]*)"))
-                .setIndices("1", "2")
+                .setIndices("1", "6")
+                .setTypes("2", "35")
 //                .setQuery(QueryBuilders.termQuery("type", "性别"))
                 .setQuery(QueryBuilders.boolQuery()
-//                                .must(QueryBuilders.matchQuery("type", "性别"))
-                        .must(QueryBuilders.matchQuery("tags", "英语"))
-                        .must(QueryBuilders.matchQuery("tags", "消费")))
-
+                        .must(QueryBuilders.matchQuery("tags", "爱骑自行车"))
+                        .must(QueryBuilders.matchQuery("tags", "消费水平高")))
                 .setFrom(0)
-                .setSize(1000)
+                .setSize(100000)
                 .execute().actionGet();
 
         SearchHits hits = response.getHits();
