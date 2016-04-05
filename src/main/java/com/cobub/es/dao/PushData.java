@@ -7,7 +7,6 @@ import com.cobub.es.domain.TypeBean;
 import com.cobub.es.json.JSONArray;
 import com.cobub.es.json.JSONObject;
 import org.elasticsearch.action.bulk.BulkItemResponse;
-import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
@@ -144,7 +143,7 @@ public class PushData {
         BulkRequestBuilder bulkRequest = client.prepareBulk();
 
         int num = 10000;
-        int count = 1000;
+        int count = 10;
         long t11 = System.currentTimeMillis();
         for (int i = 0; i < count; i++) {
 //            postIndexData(bulkRequest,client,num);

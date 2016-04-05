@@ -7,8 +7,13 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.*;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.get.GetField;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptService;
 import org.junit.After;
@@ -58,8 +63,8 @@ public class EsIndex {
         random.nextInt(indexs.length - 1);
 
         long t1 = System.currentTimeMillis();
-        for (int k = 0; k < 10; k++) {
-            postIndexData(indexs[random.nextInt(indexs.length - 1)], tags[random.nextInt(tags.length - 1)], 100);
+        for (int k = 0; k < 1; k++) {
+            postIndexData(indexs[random.nextInt(indexs.length - 1)], tags[random.nextInt(tags.length - 1)], 1);
         }
         long t2 = System.currentTimeMillis();
         System.out.println("t2 - t1=" + ((t2 - t1) / 1000) + " ms");
@@ -140,7 +145,8 @@ public class EsIndex {
         GetResponse response = client.prepareGet("twitter", "tweet", "1")
                 .setOperationThreaded(false)
                 .get();
-
+        client.prepareSearch("index_app").setSearchType(SearchType.SCAN).setScroll(
+                new TimeValue(100000)).setQuery(QueryBuilders.matchQuery("","")).execute();
 //        GetResponse response1 = client.prepareGet().get();
 //        Iterator<Map.Entry<String,GetField>> iter = response1.getFields().entrySet().iterator();
 //
@@ -241,26 +247,29 @@ public class EsIndex {
 
     @Test
     public void updateData() throws IOException, ExecutionException, InterruptedException {
-        UpdateRequest updateRequest = new UpdateRequest();
-        updateRequest.index("index");
-        updateRequest.type("type");
-        updateRequest.id("1");
-        updateRequest.doc(jsonBuilder()
-                .startObject()
-                .field("gender", "male")
-                .endObject());
-        client.update(updateRequest).get();
+//        UpdateRequest updateRequest = new UpdateRequest();
+//        updateRequest.index("index");
+//        updateRequest.type("type");
+//        updateRequest.id("1");
+//        updateRequest.doc(jsonBuilder()
+//                .startObject()
+//                .field("gender", "male")
+//                .endObject());
+//        client.update(updateRequest).get();
+//
+//        client.prepareUpdate("ttl", "doc", "1")
+//                .setScript(new Script("ctx._source.gender = \"male\"", ScriptService.ScriptType.INLINE, null, null))
+//                .get();
 
-        client.prepareUpdate("ttl", "doc", "1")
-                .setScript(new Script("ctx._source.gender = \"male\"", ScriptService.ScriptType.INLINE, null, null))
+        System.out.println(client.prepareGet("tag","PeopleProperties","2bbeaa35d4794cf8ab85e1259ee30af9").get().isExists());
+        UpdateResponse response = client.prepareUpdate("tag", "PeopleProperties", "2bbeaa35d4794cf8ab85e1259ee30af9")
+                .setDoc("city","贵州")
+                .execute()
                 .get();
 
-        client.prepareUpdate("ttl", "doc", "1")
-                .setDoc(jsonBuilder()
-                        .startObject()
-                        .field("gender", "male")
-                        .endObject())
-                .get();
+        System.out.println(response.getId() + " " + response.getIndex() + " " + response.getType());
+
+//        System.out.println(fileds.getName() + " " + fileds.getValue().toString());
     }
 //    public static void main(String[] args) {
 //        new EsIndex().generateData();
