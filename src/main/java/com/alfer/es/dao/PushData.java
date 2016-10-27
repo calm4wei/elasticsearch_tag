@@ -1,11 +1,11 @@
-package com.cobub.es.dao;
+package com.alfer.es.dao;
 
-import com.cobub.es.cache.TagCache;
-import com.cobub.es.common.ClientFactory;
-import com.cobub.es.domain.IndexBean;
-import com.cobub.es.domain.TypeBean;
-import com.cobub.es.json.JSONArray;
-import com.cobub.es.json.JSONObject;
+import com.alfer.es.common.ClientFactory;
+import com.alfer.es.cache.TagCache;
+import com.alfer.es.domain.IndexBean;
+import com.alfer.es.domain.TypeBean;
+import com.alfer.es.json.JSONArray;
+import com.alfer.es.json.JSONObject;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.client.Client;

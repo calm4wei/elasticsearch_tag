@@ -1,4 +1,4 @@
-package com.cobub.es.json;
+package com.alfer.es.json;
 
 /**
  * The JSONException is thrown by the JSON.org classes when things are amiss.

@@ -1,4 +1,4 @@
-package com.cobub.es.common;
+package com.alfer.es.common;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +10,8 @@ import java.util.Properties;
 public class Configuration {
 
     public static Properties prop = new Properties();
-    public static void conf(){
+
+    public static void conf() {
         try {
             InputStream in = Configuration.class.getClassLoader().getResourceAsStream("db.properties");
             prop.load(in);

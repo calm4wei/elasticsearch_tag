@@ -1,4 +1,4 @@
-package com.cobub.es.json;
+package com.alfer.es.json;
 
 /*
  * Copyright (c) 2002 JSON.org

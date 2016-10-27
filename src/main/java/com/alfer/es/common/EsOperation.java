@@ -1,4 +1,4 @@
-package com.cobub.es.common;
+package com.alfer.es.common;
 
 /**
  * Created by feng.wei on 2015/12/16.

@@ -1,9 +1,8 @@
 package com.cobub.test;
 
-import com.cobub.es.common.ClientFactory;
-import com.cobub.es.common.EsOperation;
-import com.cobub.es.json.JSONObject;
-import org.elasticsearch.action.get.GetRequest;
+import com.alfer.es.common.ClientFactory;
+import com.alfer.es.common.EsOperation;
+import com.alfer.es.json.JSONObject;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -14,6 +13,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by feng.wei on 2015/11/13.
@@ -301,5 +300,9 @@ public class SearchIndex {
 
     }
 
+    @Test
+    public void test_cardinality() {
+        AggregationBuilders.terms("useridentifier").field("useridentifier");
+    }
 
 }

@@ -1,26 +1,38 @@
-package com.cobub.es.domain;
+package com.alfer.es.domain;
+
+import java.util.List;
 
 /**
  * Created by feng.wei on 2015/11/20.
  */
-public class TypeBean {
+public class IndexBean {
 
     private String id;
     private String name;
     private String description;
+    private List<TypeBean> typeBeans;
 
-    public TypeBean() {
+    public IndexBean() {
     }
 
-    public TypeBean(String id, String name) {
+    public IndexBean(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public TypeBean(String id, String name, String description) {
+    public IndexBean(String id, String name, String description, List<TypeBean> typeBeans) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.typeBeans = typeBeans;
+    }
+
+    public List<TypeBean> getTypeBeans() {
+        return typeBeans;
+    }
+
+    public void setTypeBeans(List<TypeBean> typeBeans) {
+        this.typeBeans = typeBeans;
     }
 
     public String getId() {
@@ -49,7 +61,7 @@ public class TypeBean {
 
     @Override
     public String toString() {
-        return "TypeBean{" +
+        return "IndexBean{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

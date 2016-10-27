@@ -1,12 +1,9 @@
-package com.cobub.es.dao;
+package com.alfer.es.dao;
 
-import com.cobub.es.common.ClientFactory;
-import com.cobub.es.json.JSONArray;
-import com.cobub.es.json.JSONObject;
+import com.alfer.es.common.ClientFactory;
+import com.alfer.es.json.JSONObject;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 

@@ -1,4 +1,4 @@
-package com.cobub.es.common;
+package com.alfer.es.common;
 
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;

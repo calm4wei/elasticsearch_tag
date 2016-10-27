@@ -1,6 +1,6 @@
-package com.cobub.es.dao;
+package com.alfer.es.dao;
 
-import com.cobub.es.common.ClientFactory;
+import com.alfer.es.common.ClientFactory;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.Client;
 

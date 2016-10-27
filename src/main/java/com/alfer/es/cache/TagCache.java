@@ -1,7 +1,6 @@
-package com.cobub.es.cache;
+package com.alfer.es.cache;
 
-import com.cobub.es.common.DBInstance;
-import com.cobub.es.domain.IndexBean;
+import com.alfer.es.common.DBInstance;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
