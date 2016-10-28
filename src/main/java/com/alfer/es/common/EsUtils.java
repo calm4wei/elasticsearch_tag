@@ -1,10 +1,14 @@
 package com.alfer.es.common;
 
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
@@ -152,6 +156,81 @@ public class EsUtils {
                 .setSize(size);
 
         return builder;
+    }
+
+    /**
+     * migrate data from one index and type to another
+     *
+     * @param client
+     * @param srcIndex  index in original datasource
+     * @param srcType   type in original datasource
+     * @param destIndex index in target datasource
+     * @param destType  type in target datasource
+     * @return
+     */
+    public static boolean migrate(Client client, String srcIndex, String srcType, String destIndex, String destType) {
+        // scan-scoll
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(srcIndex)
+                .setSearchType(SearchType.SCAN)
+                .setScroll(new TimeValue(60000))
+                .setQuery(QueryBuilders.matchAllQuery());
+        SearchResponse searchResponse = searchRequestBuilder
+                .execute().actionGet();
+
+        searchResponse = client.prepareSearchScroll(searchResponse.getScrollId())
+                .setScroll(new TimeValue(60000))
+                .execute()
+                .actionGet();
+
+        BulkRequestBuilder bulkRequest = client.prepareBulk();
+        int count = 0;
+        for (SearchHit hit : searchResponse.getHits()) {
+//            System.out.println(hit.getIndex());
+//            System.out.println(hit.getType());
+//            System.out.println(hit.getSourceAsString());
+            bulkRequest.add(client.prepareIndex(destIndex, destType)
+                    .setSource(hit.getSourceAsString())
+            );
+
+            if (count % 10 == 0) {
+                bulkRequest.execute().actionGet();
+            }
+            count++;
+        }
+
+
+        return false;
+    }
+
+    /**
+     * function: scan-scroll
+     * <br>example</b>
+     *
+     * @param client
+     */
+    public void searchIndex(Client client) {
+
+        QueryBuilder qb = QueryBuilders.termQuery("user", "kimchy");
+        SearchResponse scrollResp = client.prepareSearch("twitter")
+                .setSearchType(SearchType.SCAN)
+                .setScroll(new TimeValue(60000))
+                .setQuery(qb)
+                .setSize(100).execute().actionGet(); //100 hits per shard will be returned for each scroll
+        //Scroll until no hits are returned
+        while (true) {
+            scrollResp = client.prepareSearchScroll(scrollResp.getScrollId()).setScroll(new TimeValue(600000)).execute().actionGet();
+            for (SearchHit hit : scrollResp.getHits()) {
+                Iterator<Map.Entry<String, Object>> rpItor = hit.getSource().entrySet().iterator();
+                while (rpItor.hasNext()) {
+                    Map.Entry<String, Object> rpEnt = rpItor.next();
+                    System.out.println(rpEnt.getKey() + " : " + rpEnt.getValue());
+                }
+            }
+            //Break condition: No hits are returned
+            if (scrollResp.getHits().hits().length == 0) {
+                break;
+            }
+        }
     }
 
 }

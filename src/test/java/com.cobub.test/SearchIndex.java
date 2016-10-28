@@ -2,6 +2,7 @@ package com.cobub.test;
 
 import com.alfer.es.common.ClientFactory;
 import com.alfer.es.common.EsOperation;
+import com.alfer.es.common.EsUtils;
 import com.alfer.es.json.JSONObject;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -303,6 +304,11 @@ public class SearchIndex {
     @Test
     public void test_cardinality() {
         AggregationBuilders.terms("useridentifier").field("useridentifier");
+    }
+
+    @Test
+    public void test_scroll(){
+        EsUtils.migrate(client2, "taiwang", "", "my_index_v2", "dz");
     }
 
 }
